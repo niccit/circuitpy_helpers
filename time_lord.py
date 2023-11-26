@@ -29,8 +29,6 @@ def _add_time_lord(socketpool, rtc):
     if time_lord is None:
         time_lord = TimeLord(socketpool, rtc)
         time_lord.set_system_clock()
-        message = "Created Time Singleton"
-        time_lord.my_log.log_message(message, "info")
 
 
 # Return the configured time singleton
@@ -49,11 +47,16 @@ class TimeLord:
     def __init__(self, socketpool, rtc):
         self.rtc = rtc
         self.socket_pool = socketpool
-        self.my_log = logger.getLocalLogger()
+        self.my_log = None
 
     # Set up NTP client
     # get the current datetime and set the RTC
     def set_system_clock(self):
+
+        self.my_log = logger.getLocalLogger()
+
+        message = "Created Time Singleton"
+        self.my_log.log_message(message, "info")
 
         ntp_client = adafruit_ntp.NTP(self.socket_pool, tz_offset=float(data["tz_offset"]))
         attempt = 0
@@ -62,6 +65,7 @@ class TimeLord:
         while connect_success is False:
             try:
                 self.rtc.datetime = ntp_client.datetime
+                self.my_log.log_message("RTC successfully updated", "info")
                 connect_success = True
             except OSError as oe:
                 if attempt <= 5:
