@@ -9,7 +9,6 @@ import time
 import adafruit_logging as a_logger
 from adafruit_logging import FileHandler, NOTSET, Handler, LogRecord
 import time_lord
-# import one_mqtt
 
 
 main_log = None
@@ -29,6 +28,14 @@ try:
 except ImportError:
     print("Logging information stored in data.py, please create file")
     raise
+
+try:
+    from mqtt_data import mqtt_data
+except ImportError:
+    print("MQTT information stored in mqtt_data.py, please create file")
+    raise
+
+use_time = data["time_lord"]
 
 
 def _addLocalLogger():
@@ -70,7 +77,9 @@ class LocalLogger:
         self._the_log.setLevel(data["log_level"])
         self.file_handler = None
         self.mqtt_handler = None
-        self.my_time = time_lord.get_time_lord()
+        self.my_mqtt = None
+        if use_time == 1:
+            self.my_time = time_lord.get_time_lord()
 
     # Logging to an SD card
     def add_sd_stream(self):
@@ -109,9 +118,13 @@ class LocalLogger:
 
     # Logging to an MQTT broker
     def add_mqtt_stream(self, topic):
+        import local_mqtt
+
+        if self.my_mqtt is None:
+            self.my_mqtt = local_mqtt.getMqtt()
+
         if self.mqtt_handler not in handlers:
-            my_mqtt = one_mqtt.getMqtt()
-            self.mqtt_handler = MQTTHandler(my_mqtt.mqtt_client, topic)
+            self.mqtt_handler = MQTTHandler(self.my_mqtt.mqtt_client, topic)
             self._the_log.addHandler(self.mqtt_handler)
             handlers.append(self.mqtt_handler)
 
@@ -128,13 +141,20 @@ class LocalLogger:
     # If notset is passed with mqtt then the level will be set to info; this is so things don't crash
     def log_message(self, message, level: str = "notset", mqtt: bool = False, sdcard_dump: bool = False):
 
+        if use_time == 1:
+            logging_time = self.my_time.get_logging_datetime()
+        else:
+            now = time.localtime()
+            logging_time = "{:02d}.{:02d}.{:02d} {:02d}:{:02d}:{:02d}".format(now.tm_year, now.tm_mon, now.tm_mday,
+                                                                              now.tm_hour, now.tm_min, now.tm_sec)
+
         if mqtt is True:
             if level is "notset" or sdcard_dump is True:
                 level = "info"
                 io_message = message
             else:
                 log_info = level.upper()
-                io_message = log_info + " - " + self.my_time.get_logging_datetime() + ": " + message
+                io_message = log_info + " - " + logging_time + ": " + message
 
             try:
                 self._the_log.log(get_log_level(level), json.dumps(io_message))
@@ -144,7 +164,7 @@ class LocalLogger:
                 pass
         else:
             try:
-                self._the_log.log(get_log_level(level), self.my_time.get_logging_datetime() + ": " + message)
+                self._the_log.log(get_log_level(level), logging_time + ": " + message)
             except OSError as oe:
                 message = "Console/SD logging failed, " + str(oe)
                 self._the_log.log(get_log_level("error"), message)
@@ -162,7 +182,8 @@ class LocalLogger:
     # --- Methods to interact with the SD card without having to remove it --- #
     # Output specified number of lines of log file to disk
     # If restart is True then exclude the most recent 13 lines (start up messages)
-    def dump_sd_log(self, logfile, lines_to_read, restart: bool = False):
+    # Set MQTT to true if you want to send this output to a logging feed
+    def dump_sd_log(self, logfile, lines_to_read, restart: bool = False, mqtt: bool = False):
 
         # If not logfile provided, print message and get out of dodge
         if logfile is None:
@@ -225,15 +246,17 @@ class LocalLogger:
 
                 # Remove all double quotes in string
                 new_string = new_string.replace('"', '')
-
-                mqtt = one_mqtt.getMqtt()
-                self.add_mqtt_stream(mqtt.gen_topic)
-                self.log_message("LOG: " + new_string.strip('\r\n'), "info", mqtt=True, sdcard_dump=True)
+                message = "LOG: " + new_string.strip('\r\n')
+                if mqtt is True:
+                    self.my_mqtt.publish(mqtt_data["primary_feed"], message, "info", sdcard_dump=True)
+                    time.sleep(0.5)
+                    self.add_sd_stream()
+                    self.my_mqtt.publish(mqtt_data["primary_feed"], "End read sdcard log file", "info")
+                else:
+                    self.add_sd_stream()
+                    self.log_message(message, "info")
+                    self.log_message("End read sdcard log file", "info")
                 time.sleep(0.25)
-                self.add_mqtt_stream(mqtt.gen_topic)
-
-            self.add_sd_stream()
-            self.log_message("End read sdcard log file", "info", mqtt=True)
 
     # Read and return the contents of a file
     def read_file(self, filename):
@@ -246,8 +269,6 @@ class LocalLogger:
         output = []
         try:
             file = "/sd/" + filename
-            mqtt = one_mqtt.getMqtt()
-            self.add_mqtt_stream(mqtt.gen_topic)
             with open(file, 'r') as file:
                 output.append(file.readlines())
             file.close()
@@ -258,7 +279,7 @@ class LocalLogger:
 
     # List the directories on the SD card where we store log and state files
     # Just a sanity check in case something goes wonky
-    def list_sd_card(self, directory):
+    def list_sd_card(self, directory, mqtt: bool = False):
         if directory is None:
             list_dir = "/sd/"
         else:
@@ -267,9 +288,11 @@ class LocalLogger:
         self.log_message("Request to list SD card contents for directory: " + str(directory), "info")
         try:
             os.listdir(list_dir)
-            mqtt = one_mqtt.getMqtt()
-            self.add_mqtt_stream(mqtt.gen_topic)
-            self.log_message(str(directory) + ": " + str(os.listdir(list_dir)), "info", mqtt=True)
+            message = str(directory) + ": " + str(os.listdir(list_dir))
+            if mqtt is True:
+                self.my_mqtt.publish(local_mqtt.get_formatted_topic(mqtt_data["primary_feed"]), message, "info")
+            else:
+                self.log_message(message, "info")
         except OSError:
             self.log_message("Unable to list directory " + str(directory), "warning")
             pass
@@ -322,3 +345,4 @@ def _get_split_string(log_line):
         return log_line.rsplit(" CRITICAL - ")
     else:
         return log_line
+

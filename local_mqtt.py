@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 
+
 import ssl
 import adafruit_minimqtt.adafruit_minimqtt as my_mqtt
 from adafruit_io.adafruit_io import IO_MQTT
@@ -13,6 +14,8 @@ try:
 except ImportError:
     print("Logging level stored in data.py, please create file")
     raise
+
+use_log = data["local_logger"]
 
 
 # Create or retrieve a MQTT object by name; only retrieves MQTT objects created using this function.
@@ -29,7 +32,7 @@ def _addMqtt():
     if mqtt_prime is None:
         mqtt_prime = MessageBroker()
         message = "Created MQTT singleton"
-        mqtt_prime.my_log.log_message(message, "info")
+        mqtt_prime.print_message(message, "info")
 
 
 # Return properly formatted topic
@@ -63,7 +66,8 @@ class MessageBroker:
         self.io = None
         self.gen_feed = mqtt_data["primary_feed"]
         self.gen_topic = mqtt_data["username"] + "/feeds/" + self.gen_feed + "/json"
-        self.my_log = logger.getLocalLogger()
+        if use_log == 1:
+            self.my_log = logger.getLocalLogger()
 
     # --- Getters --- #
 
@@ -91,15 +95,32 @@ class MessageBroker:
             self.mqtt_client.subscribe(topic)
 
     # Publish to MQTT
-    def publish(self, topic, io_message, log_level: str = "notset", add_sdcard: bool = False):
+    def publish(self, topic, io_message, log_level: str = "notset", sdcard_dump: bool = False):
+
         if not self.mqtt_client.is_connected():
-            self.my_log.log_message("Need to connect to MQTT", "info")
+            message = "Need to connect to MQTT"
+            self.print_message(message, "info")
             self.connect()
 
-        try:
-            self.my_log.add_mqtt_stream(topic)
-            self.my_log.log_message(io_message, log_level, mqtt=True)
-        except OSError as oe:
-            message = "Unable to publish to MQTT! " + str(oe)
-            self.my_log.log_message(message, "critical")
-            pass
+        if use_log == 1:
+            try:
+                self.my_log.add_mqtt_stream(topic)
+                if sdcard_dump is True:
+                    self.print_message(io_message, log_level, mqtt=True, sdcard_dump=True)
+                else:
+                    self.print_message(io_message, log_level, mqtt=True)
+            except OSError as oe:
+                message = "Unable to publish to MQTT! " + str(oe)
+                self.print_message(message, "critical")
+                pass
+        else:
+            self.print_message("Publishing to MQTT")
+            self.mqtt_client.publish(topic, io_message)
+
+    # In order to be flexible and not create a dependency between time_lord and local_logger
+    # Handle print statements accordingly
+    def print_message(self, message, level: str = "debug", mqtt: bool = False, sdcard_dump: bool = False):
+        if use_log == 1:
+            self.my_log.log_message(message, level, mqtt, sdcard_dump)
+        else:
+            print(message)

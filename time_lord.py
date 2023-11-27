@@ -14,6 +14,8 @@ except ImportError:
 # The time singleton
 # No value until configured
 time_lord = None
+# Assume we're not using the logging library
+use_log = data["local_logger"]
 
 
 # Configure the time singleton
@@ -52,8 +54,9 @@ class TimeLord:
     # Set up NTP client
     # get the current datetime and set the RTC
     def set_system_clock(self):
+        if use_log == 1:
+            self.my_log = logger.getLocalLogger()
 
-        self.my_log = logger.getLocalLogger()
         ntp_client = adafruit_ntp.NTP(self.socket_pool, tz_offset=float(data["tz_offset"]))
         attempt = 0
         connect_success = False
@@ -61,20 +64,19 @@ class TimeLord:
         while connect_success is False:
             try:
                 self.rtc.datetime = ntp_client.datetime
-                self.my_log.log_message("RTC successfully updated", "info")
                 connect_success = True
-                message = "Created Time Singleton"
-                self.my_log.log_message(message, "info")
+                message = "Created Time Singleton and updated RTC"
+                self.print_message(message, "info")
             except OSError as oe:
                 if attempt <= 5:
                     message = "failed to connect to NTP, retrying ..."
-                    self.my_log.log_message(message, "warning")
+                    self.print_message(message, "warning")
                     attempt += 1
                     time.sleep(2)
                     pass
                 else:
                     message = "Tried " + str(attempt) + "times, could not connect to NTP: " + str(oe)
-                    self.my_log.log_message(message, "critical")
+                    self.print_message(message, "critical")
                     raise RuntimeError
 
     # Return the current date/time for logging
@@ -115,3 +117,11 @@ class TimeLord:
     # Format (tm_year, tm_mon, tm_mday, tm_hour, tm_min, tm_sec, tm_wday, tm_yday, tm_isdst)
     def get_current_time(self):
         return self.rtc.datetime
+
+    # In order to be flexible and not create a dependency between time_lord and local_logger
+    # Handle print statements accordingly
+    def print_message(self, message, level, mqtt: bool = False, sdcard_dump: bool = False):
+        if use_log == 1:
+            self.my_log.log_message(message, level, mqtt=mqtt, sdcard_dump=sdcard_dump)
+        else:
+            print(message)
