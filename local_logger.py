@@ -9,6 +9,7 @@ import time
 import adafruit_logging as a_logger
 from adafruit_logging import FileHandler, NOTSET, Handler, LogRecord
 import time_lord
+import local_mqtt
 
 
 main_log = None
@@ -187,7 +188,7 @@ class LocalLogger:
 
         # If not logfile provided, print message and get out of dodge
         if logfile is None:
-            self.log_message("No logfile specified!", "error")
+            self._the_log.log(get_log_level("error"), "No logfile specified!")
             return
 
         self.close_sd_stream()
@@ -207,7 +208,7 @@ class LocalLogger:
             log_length = len(log_output)
             start_read = log_length - num
         except OSError:
-            self.log_message("unable to open and read syslog file", "warning")
+            self._the_log.log(get_log_level("warning"), "unable to open and read syslog file")
             pass
 
         # Decide if we need to start reading the file prior to the initial 13 start up lines
@@ -225,10 +226,10 @@ class LocalLogger:
 
             # Read the selected content and remove all " and carriage returns
             # If we don't the output will look hideous
-            self.log_message("log file output is " + str(len(new_log_output)) + " long ", "debug")
+            self._the_log.log(get_log_level("debug"), "log file output is " + str(len(new_log_output)) + " long ")
             for line in range(len(new_log_output)):
                 string = _get_split_string(new_log_output[line])
-                self.log_message("string is " + str(len(string)) + " long and is " + str(string), "debug")
+                self._the_log.log(get_log_level("debug"), "string is " + str(len(string)) + " long and is " + str(string))
 
                 # Assign new_string based on length of string
                 if len(string) > 1:
@@ -240,7 +241,7 @@ class LocalLogger:
                 strip_level = [sub for sub in list_of_log_levels if sub in new_string]
                 if len(strip_level) > 0:
                     remove_string = strip_level[0] + " - "
-                    self.log_message("remove string is " + str(remove_string), "debug")
+                    self._the_log.log(get_log_level("debug"), "remove string is " + str(remove_string))
                     # Remove all log levels in string
                     new_string = new_string.replace(remove_string, '')
 
@@ -248,22 +249,24 @@ class LocalLogger:
                 new_string = new_string.replace('"', '')
                 message = "LOG: " + new_string.strip('\r\n')
                 if mqtt is True:
-                    self.my_mqtt.publish(mqtt_data["primary_feed"], message, "info", sdcard_dump=True)
+                    self.my_mqtt.publish(self.my_mqtt.gen_topic, message, "info", sdcard_dump=True)
                     time.sleep(0.5)
-                    self.add_sd_stream()
-                    self.my_mqtt.publish(mqtt_data["primary_feed"], "End read sdcard log file", "info")
                 else:
-                    self.add_sd_stream()
-                    self.log_message(message, "info")
-                    self.log_message("End read sdcard log file", "info")
-                time.sleep(0.25)
+                    self._the_log.log(get_log_level("info"), message)
+
+            self.add_sd_stream()
+            end_msg = "End read sdcard log file"
+            if mqtt is True:
+                self.my_mqtt.publish(self.my_mqtt.gen_topic, end_msg,  "info")
+            else:
+                self._the_log.log(get_log_level("info"), end_msg)
 
     # Read and return the contents of a file
     def read_file(self, filename):
 
         # If not logfile provided, print message and get out of dodge
         if filename is None:
-            self.log_message("No file provided!")
+            self._the_log.log(get_log_level("critical"), "No file provided!")
             return
 
         output = []
@@ -274,33 +277,33 @@ class LocalLogger:
             file.close()
             return output
         except OSError:
-            self.log_message("unable to open and read " + str(filename), "warning")
+            self._the_log.log(get_log_level("warning"), "unable to open and read " + str(filename))
             pass
 
     # List the directories on the SD card where we store log and state files
     # Just a sanity check in case something goes wonky
     def list_sd_card(self, directory, mqtt: bool = False):
-        if directory is None:
+        if directory is None or directory is "sd":
             list_dir = "/sd/"
         else:
             list_dir = "/sd/" + directory
 
-        self.log_message("Request to list SD card contents for directory: " + str(directory), "info")
+        self._the_log.log(get_log_level("info"), "Request to list SD card contents for directory: " + str(directory))
         try:
             os.listdir(list_dir)
             message = str(directory) + ": " + str(os.listdir(list_dir))
             if mqtt is True:
-                self.my_mqtt.publish(local_mqtt.get_formatted_topic(mqtt_data["primary_feed"]), message, "info")
+                self.my_mqtt.publish(self.my_mqtt.gen_topic, message, "info")
             else:
-                self.log_message(message, "info")
+                self._the_log.log(get_log_level("info"), message)
         except OSError:
-            self.log_message("Unable to list directory " + str(directory), "warning")
+            self._the_log.log(get_log_level("warning"), "Unable to list directory " + str(directory))
             pass
 
     # Maintenance, rotate the system log on a monthly basis
     def rotate_sd_log(self, logfile):
         if logfile is None:
-            self.log_message("No logfile provided!")
+            self._the_log.log(get_log_level("critical"), "No logfile provided!")
             return
 
         file = "/sd/" + logfile
