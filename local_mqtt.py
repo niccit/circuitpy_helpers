@@ -121,6 +121,6 @@ class MessageBroker:
     # Handle print statements accordingly
     def print_message(self, message, level: str = "debug", mqtt: bool = False, sdcard_dump: bool = False):
         if use_log == 1:
-            self.my_log.log_message(message, level, mqtt, sdcard_dump)
+            self.my_log.log_message(message, level, mqtt=mqtt, sdcard_dump=sdcard_dump)
         else:
             print(message)
