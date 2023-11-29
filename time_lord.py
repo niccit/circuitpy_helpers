@@ -108,7 +108,7 @@ class TimeLord:
         if separator is not None:
             d = "{:02d}" + separator + "{:02d}" + separator + "{:02d}".format(now.tm_year, now.tm_mday, now.tm_mon)
         else:
-            d = "{:02d}{:02d}{:02d}".format(now.tm_year, now.tm_mday, now.tm_mon)
+            d = "{:02d}.{:02d}.{:02d}".format(now.tm_year, now.tm_mday, now.tm_mon)
 
         return d
 
