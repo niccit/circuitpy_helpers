@@ -79,8 +79,11 @@ class MessageBroker:
     # --- Methods --- #
 
     # Configure MQTT to use socketpool
-    def configure_publish(self, pool_name):
-        my_mqtt.set_socket(pool_name)
+    def configure_publish(self, pool_name, iface=None):
+        if iface is not None:
+            my_mqtt.set_socket(pool_name, iface)
+        else:
+            my_mqtt.set_socket(pool_name)
         self.io = IO_MQTT(self.mqtt_client)
 
     # Connect to the MQTT broker
