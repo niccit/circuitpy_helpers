@@ -106,8 +106,8 @@ class MessageBroker:
             self.connect()
 
         if use_log == 1:
+            self.my_log.add_mqtt_stream(topic)
             try:
-                self.my_log.add_mqtt_stream(topic)
                 if sdcard_dump is True:
                     self.print_message(io_message, log_level, mqtt=True, sdcard_dump=True)
                 else:
