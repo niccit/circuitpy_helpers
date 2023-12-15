@@ -8,7 +8,6 @@ import adafruit_ntp
 from rtc import RTC
 
 import local_logger as logger
-import local_mqtt
 
 try:
     from data import data
@@ -42,8 +41,6 @@ def _add_time_lord(socketpool, rtc):
             time_lord.my_log = logger.getLocalLogger()
         if time_lord.rtc is not None:
             time_lord.set_system_clock()
-        else:
-            time_lord.print_message("Time Singleton Created", "info")
 
 
 # Return the configured time singleton
@@ -79,18 +76,16 @@ class TimeLord:
             try:
                 self.rtc.datetime = self.ntp_client.datetime
                 connect_success = True
-                message = "Created Time Singleton and updated RTC"
-                self.print_message(message, "info")
             except OSError as oe:
                 if attempt <= 5:
                     message = "failed to connect to NTP, retrying ..."
-                    self.print_message(message, "warning")
+                    print(message, "warning")
                     attempt += 1
                     time.sleep(2)
                     pass
                 else:
                     message = "Tried " + str(attempt) + "times, could not connect to NTP: " + str(oe)
-                    self.print_message(message, "critical")
+                    print(message, "critical")
                     raise RuntimeError
 
     # Return the current date/time for logging
@@ -138,11 +133,3 @@ class TimeLord:
             return self.ntp_client.datetime
         else:
             return self.rtc.datetime
-
-    # In order to be flexible and not create a dependency between time_lord and local_logger
-    # Handle print statements accordingly
-    def print_message(self, message, level, sdcard_dump: bool = False):
-        if use_log == 1:
-            self.my_log.log_message(message, level, sdcard_dump=sdcard_dump)
-        else:
-            print(message)

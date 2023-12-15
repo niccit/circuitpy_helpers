@@ -31,8 +31,6 @@ def _addMqtt():
 
     if mqtt_prime is None:
         mqtt_prime = MessageBroker()
-        message = "Created MQTT singleton"
-        mqtt_prime.print_message(message, "info")
 
 
 # Return properly formatted topic
@@ -102,28 +100,20 @@ class MessageBroker:
 
         if not self.mqtt_client.is_connected():
             message = "Need to connect to MQTT"
-            self.print_message(message, "info")
+            print(message, "info")
             self.connect()
 
         if use_log == 1:
             self.my_log.add_mqtt_stream(topic)
             try:
                 if sdcard_dump is True:
-                    self.print_message(io_message, log_level, mqtt=True, sdcard_dump=True)
+                    self.my_log.log_message(io_message, log_level, mqtt=True, sdcard_dump=True)
                 else:
-                    self.print_message(io_message, log_level, mqtt=True)
+                    self.my_log.log_message(io_message, log_level, mqtt=True)
             except OSError as oe:
                 message = "Unable to publish to MQTT! " + str(oe)
-                self.print_message(message, "critical")
+                print(message, "critical")
                 pass
         else:
-            self.print_message("Publishing to MQTT")
+            self.my_log.log_message("Publishing to MQTT", "info")
             self.mqtt_client.publish(topic, io_message)
-
-    # In order to be flexible and not create a dependency between time_lord and local_logger
-    # Handle print statements accordingly
-    def print_message(self, message, level: str = "debug", mqtt: bool = False, sdcard_dump: bool = False):
-        if use_log == 1:
-            self.my_log.log_message(message, level, mqtt=mqtt, sdcard_dump=sdcard_dump)
-        else:
-            print(message)

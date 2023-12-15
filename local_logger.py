@@ -9,7 +9,6 @@ import time
 import adafruit_logging as a_logger
 from adafruit_logging import FileHandler, NOTSET, Handler, LogRecord
 import time_lord
-import local_mqtt
 
 
 main_log = None
@@ -45,8 +44,6 @@ def _addLocalLogger():
     if main_log is None:
         main_log = LocalLogger()
         main_log.add_console_stream()
-        message = "Created local logger"
-        main_log.log_message(message, "info")
 
 
 # Take in a string and return the proper logging level
