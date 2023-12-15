@@ -116,6 +116,7 @@ class LocalLogger:
 
     # Logging to an MQTT broker
     def add_mqtt_stream(self, topic):
+        import local_mqtt
 
         if self.my_mqtt is None:
             self.my_mqtt = local_mqtt.getMqtt()
@@ -180,7 +181,7 @@ class LocalLogger:
     # Output specified number of lines of log file to disk
     # If restart is True then exclude the most recent 13 lines (start up messages)
     # Set MQTT to true if you want to send this output to a logging feed
-    def dump_sd_log(self, logfile, lines_to_read, restart: bool = False):
+    def dump_sd_log(self, logfile, lines_to_read, restart: bool = False, mqtt: bool = False):
 
         # If not logfile provided, print message and get out of dodge
         if logfile is None:
@@ -245,10 +246,18 @@ class LocalLogger:
                 # Remove all double quotes in string
                 new_string = new_string.replace('"', '')
                 message = "LOG: " + new_string.strip('\r\n')
+                if mqtt is True:
+                    self.my_mqtt.publish(self.my_mqtt.gen_topic, message, "info", sdcard_dump=True)
+                    time.sleep(0.5)
+                else:
+                    self._the_log.log(get_log_level("info"), message)
 
-                final_data.append(message)
-
-            return final_data
+            self.add_sd_stream()
+            end_msg = "End read sdcard log file"
+            if mqtt is True:
+                self.my_mqtt.publish(self.my_mqtt.gen_topic, end_msg,  "info")
+            else:
+                self._the_log.log(get_log_level("info"), end_msg)
 
     # Read and return the contents of a file
     def read_file(self, filename):
@@ -271,14 +280,20 @@ class LocalLogger:
 
     # List the directories on the SD card where we store log and state files
     # Just a sanity check in case something goes wonky
-    def list_sd_card(self, directory):
+    def list_sd_card(self, directory, mqtt: bool = False):
         if directory is None or directory is "sd":
             list_dir = "/sd/"
         else:
             list_dir = "/sd/" + directory
 
+        self._the_log.log(get_log_level("info"), "Request to list SD card contents for directory: " + str(directory))
         try:
-            return os.listdir(list_dir)
+            os.listdir(list_dir)
+            message = str(directory) + ": " + str(os.listdir(list_dir))
+            if mqtt is True:
+                self.my_mqtt.publish(self.my_mqtt.gen_topic, message, "info")
+            else:
+                self._the_log.log(get_log_level("info"), message)
         except OSError:
             self._the_log.log(get_log_level("warning"), "Unable to list directory " + str(directory))
             pass
