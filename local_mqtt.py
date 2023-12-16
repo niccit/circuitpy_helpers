@@ -43,7 +43,7 @@ try:
     from mqtt_data import mqtt_data
 except ImportError:
     log_message = "MQTT data stored in mqtt_data.py, please create file"
-    print(log_message, "critical")
+    print(log_message)
     raise
 
 
@@ -100,7 +100,7 @@ class MessageBroker:
 
         if not self.mqtt_client.is_connected():
             message = "Need to connect to MQTT"
-            print(message, "info")
+            print(message)
             self.connect()
 
         if use_log == 1:
@@ -112,7 +112,7 @@ class MessageBroker:
                     self.my_log.log_message(io_message, log_level, mqtt=True)
             except OSError as oe:
                 message = "Unable to publish to MQTT! " + str(oe)
-                print(message, "critical")
+                print(message)
                 pass
         else:
             self.my_log.log_message("Publishing to MQTT", "info")
