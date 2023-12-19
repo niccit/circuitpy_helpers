@@ -107,5 +107,5 @@ class MessageBroker:
                 print(message)
                 pass
         else:
-            self.my_log.log_message("Publishing to MQTT", "info")
+            print(log_level, " - ", io_message)
             self.mqtt_client.publish(topic, io_message)
