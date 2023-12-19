@@ -7,8 +7,6 @@ import time
 import adafruit_ntp
 from rtc import RTC
 
-import local_logger as logger
-
 try:
     from data import data
 except ImportError:
@@ -19,8 +17,6 @@ except ImportError:
 # The time singleton
 # No value until configured
 time_lord = None
-# Get whether to use adafruit_logger from the data file
-use_log = data["local_logger"]
 
 
 # Configure the time singleton
@@ -37,10 +33,6 @@ def _add_time_lord(socketpool, rtc):
 
     if time_lord is None:
         time_lord = TimeLord(socketpool, rtc)
-        if use_log == 1:
-            time_lord.my_log = logger.getLocalLogger()
-        if time_lord.rtc is not None:
-            time_lord.set_system_clock()
 
 
 # Return the configured time singleton
@@ -62,7 +54,6 @@ class TimeLord:
         else:
             self.rtc = rtc
         self.socket_pool = socketpool
-        self.my_log = None
         self.ntp_client = adafruit_ntp.NTP(self.socket_pool, tz_offset=float(data["tz_offset"]))
 
     # Set up NTP client

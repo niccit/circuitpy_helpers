@@ -8,8 +8,8 @@ import os
 import time
 import adafruit_logging as a_logger
 from adafruit_logging import FileHandler, NOTSET, Handler, LogRecord
-import time_lord
 
+import time_lord
 
 main_log = None
 handlers = []
@@ -18,8 +18,8 @@ handlers = []
 # Create or return the logger this project uses
 # If the local logger does not exist it will be created
 # For this project the local logger is console
-def getLocalLogger():
-    _addLocalLogger()
+def getLocalLogger(use_time: bool = False):
+    _addLocalLogger(use_time)
     return main_log
 
 
@@ -35,14 +35,12 @@ except ImportError:
     print("MQTT information stored in mqtt_data.py, please create file")
     raise
 
-use_time = data["time_lord"]
 
-
-def _addLocalLogger():
+def _addLocalLogger(use_time):
     global main_log
 
     if main_log is None:
-        main_log = LocalLogger()
+        main_log = LocalLogger(use_time)
         main_log.add_console_stream()
 
 
@@ -70,13 +68,14 @@ class LocalLogger:
 
     # Initialize the wrapper
     # This should never be called directly, use getLocalLogger() instead
-    def __init__(self):
+    def __init__(self, use_time):
         self._the_log = a_logger.getLogger('console')
         self._the_log.setLevel(data["log_level"])
         self.file_handler = None
         self.mqtt_handler = None
         self.my_mqtt = None
-        if use_time == 1:
+        self.use_time = use_time
+        if self.use_time == 1:
             self.my_time = time_lord.get_time_lord()
 
     # Logging to an SD card
@@ -139,7 +138,7 @@ class LocalLogger:
     # If notset is passed with mqtt then the level will be set to info; this is so things don't crash
     def log_message(self, message, level: str = "notset", mqtt: bool = False, sdcard_dump: bool = False):
 
-        if use_time == 1:
+        if self.use_time == 1:
             logging_time = self.my_time.get_logging_datetime()
         else:
             now = time.localtime()

@@ -8,29 +8,20 @@ import local_logger as logger
 
 mqtt_prime = None  # The only MQTT client, we don't need multiple
 
-# Get logging level
-try:
-    from data import data
-except ImportError:
-    print("Logging level stored in data.py, please create file")
-    raise
-
-use_log = data["local_logger"]
-
 
 # Create or retrieve a MQTT object by name; only retrieves MQTT objects created using this function.
 # There can only be one MQTT object; if one already exists it will be returned
 # Requires the socketpool name in order to fullyl set up the MQTT client
-def getMqtt():
-    _addMqtt()
+def getMqtt(use_logger: bool = False):
+    _addMqtt(use_logger)
     return mqtt_prime
 
 
-def _addMqtt():
+def _addMqtt(use_logger):
     global mqtt_prime
 
     if mqtt_prime is None:
-        mqtt_prime = MessageBroker()
+        mqtt_prime = MessageBroker(use_logger)
 
 
 # Return properly formatted topic
@@ -52,19 +43,20 @@ class MessageBroker:
 
     # Initialize the mqtt_client
     # This method should never be called directly, use getMqtt() instead
-    def __init__(self):
+    def __init__(self, use_logger):
         self.mqtt_client = my_mqtt.MQTT(
             broker=mqtt_data["server"],
             port=mqtt_data["port"],
             username=mqtt_data["username"],
             password=mqtt_data["key"],
             is_ssl=True,
-            ssl_context=ssl.create_default_context()
+            ssl_context=ssl.create_default_context(),
         )
         self.io = None
         self.gen_feed = mqtt_data["primary_feed"]
         self.gen_topic = mqtt_data["username"] + "/feeds/" + self.gen_feed + "/json"
-        if use_log == 1:
+        self.use_logger = use_logger
+        if self.use_logger is True:
             self.my_log = logger.getLocalLogger()
 
     # --- Getters --- #
@@ -103,7 +95,7 @@ class MessageBroker:
             print(message)
             self.connect()
 
-        if use_log == 1:
+        if self.use_logger is True:
             self.my_log.add_mqtt_stream(topic)
             try:
                 if sdcard_dump is True:
@@ -115,5 +107,5 @@ class MessageBroker:
                 print(message)
                 pass
         else:
-            self.my_log.log_message("Publishing to MQTT", "info")
+            print(log_level, " - ", io_message)
             self.mqtt_client.publish(topic, io_message)
