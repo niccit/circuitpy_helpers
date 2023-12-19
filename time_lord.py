@@ -22,7 +22,7 @@ time_lord = None
 # Configure the time singleton
 # If not using a real time clock, pass in any value for rtc
 # rtc will only get used if it is of type RTC
-def configure_time(socket_pool, rtc):
+def configure_time(socket_pool, rtc: RTC = None):
     _add_time_lord(socket_pool, rtc)
     return time_lord
 
@@ -33,6 +33,8 @@ def _add_time_lord(socketpool, rtc):
 
     if time_lord is None:
         time_lord = TimeLord(socketpool, rtc)
+        if time_lord.rtc is not None:
+            time_lord.set_system_clock()
 
 
 # Return the configured time singleton
