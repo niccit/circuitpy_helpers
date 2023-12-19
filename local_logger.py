@@ -8,8 +8,8 @@ import os
 import time
 import adafruit_logging as a_logger
 from adafruit_logging import FileHandler, NOTSET, Handler, LogRecord
-import time_lord
 
+import time_lord
 
 main_log = None
 handlers = []
@@ -35,7 +35,13 @@ except ImportError:
     print("MQTT information stored in mqtt_data.py, please create file")
     raise
 
-use_time = data["time_lord"]
+if data["time_lord"]:
+    use_time = data["time_lord"]
+else:
+    use_time = 0
+
+if use_time == 1:
+    my_time = time_lord.get_time_lord()
 
 
 def _addLocalLogger():
