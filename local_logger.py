@@ -81,14 +81,15 @@ class LocalLogger:
     # Logging to an SD card
     def add_sd_stream(self):
         if self.file_handler not in handlers:
+            log_name = data["sd_logfile"]
+            log_filepath = "/sd/" + log_name
             try:
-                log_name = data["sd_logfile"]
-                log_filepath = "/sd/" + log_name
                 self.file_handler = FileHandler(log_filepath)
                 self._the_log.addHandler(self.file_handler)
                 handlers.append(self.file_handler)
             except OSError as oe:
-                self._the_log.log(get_log_level("warning"), "unable to add sd stream " + str(oe))
+                print("logfile does not exist on disk, please create it")
+                pass
 
     # Flush the file_handler stream to SD
     def flush_sd_stream(self):
@@ -324,6 +325,8 @@ class MQTTHandler(Handler):
             if self._mqtt_client.is_connected():
                 self._mqtt_client.publish(self._topic, record.msg)
         except RuntimeError:
+            pass
+        except OSError:
             pass
 
     def handle(self, record: LogRecord) -> None:
