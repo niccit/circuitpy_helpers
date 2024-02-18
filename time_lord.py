@@ -22,7 +22,7 @@ time_lord = None
 # Configure the time singleton
 # If not using a real time clock, pass in any value for rtc
 # rtc will only get used if it is of type RTC
-def configure_time(socket_pool, rtc: RTC = None):
+def configure_time(socket_pool, rtc=None):
     _add_time_lord(socket_pool, rtc)
     return time_lord
 
@@ -51,7 +51,7 @@ class TimeLord:
 
     # Initialize the time singleton
     def __init__(self, socketpool, rtc):
-        if type(rtc) is not RTC:
+        if type(rtc) is not data["rtc_type"]:
             self.rtc = None
         else:
             self.rtc = rtc
@@ -123,6 +123,10 @@ class TimeLord:
 
     def _provide_time_data(self):
         if self.rtc is None:
-            return self.ntp_client.datetime
+            try:
+                return self.ntp_client.datetime
+            except OSError as oe:
+                print("Error connecting to NTP", oe)
+                pass
         else:
             return self.rtc.datetime
