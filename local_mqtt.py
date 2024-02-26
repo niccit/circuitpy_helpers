@@ -90,10 +90,7 @@ class MessageBroker:
     # Publish to MQTT
     def publish(self, topic, io_message, log_level: str = "notset", sdcard_dump: bool = False):
 
-        if not self.mqtt_client.is_connected():
-            message = "Need to connect to MQTT"
-            print(message)
-            self.connect()
+        self.mqtt_client.connect()
 
         if self.use_logger is True:
             self.my_log.add_mqtt_stream(topic)
@@ -109,3 +106,5 @@ class MessageBroker:
         else:
             print(log_level, " - ", io_message)
             self.mqtt_client.publish(topic, io_message)
+
+        self.mqtt_client.disconnect()

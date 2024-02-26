@@ -5,7 +5,6 @@
 
 import time
 import adafruit_ntp
-from rtc import RTC
 
 try:
     from data import data
@@ -126,7 +125,8 @@ class TimeLord:
             try:
                 return self.ntp_client.datetime
             except OSError as oe:
-                print("Error connecting to NTP", oe)
+                print("Error connecting to NTP", oe, "using localtime")
+                return time.localtime()
                 pass
         else:
             return self.rtc.datetime
