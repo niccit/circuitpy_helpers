@@ -85,7 +85,10 @@ class MessageBroker:
     # Connect to the MQTT broker
     def connect(self):
         if not self.mqtt_client.is_connected():
-            self.io.connect()
+            if mqtt_data["is_adafruit_io"] is True:
+                self.io.connect()
+            else:
+                self.mqtt_client.connect()
 
     # Subscribe to MQTT topics
     def subscribe(self, topics):
@@ -95,8 +98,6 @@ class MessageBroker:
 
     # Publish to MQTT
     def publish(self, topic, io_message, log_level: str = "notset", sdcard_dump: bool = False):
-
-        self.mqtt_client.connect()
 
         if self.use_logger is True:
             self.my_log.add_mqtt_stream(topic)
@@ -112,5 +113,3 @@ class MessageBroker:
         else:
             print(log_level, " - ", io_message)
             self.mqtt_client.publish(topic, io_message)
-
-        self.mqtt_client.disconnect()
