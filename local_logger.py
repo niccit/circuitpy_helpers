@@ -8,7 +8,7 @@ import os
 import time
 import adafruit_logging as a_logger
 from adafruit_logging import FileHandler, NOTSET, Handler, LogRecord
-
+import adafruit_minimqtt.adafruit_minimqtt as MQTT
 import time_lord
 
 main_log = None
