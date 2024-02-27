@@ -24,11 +24,6 @@ def _addMqtt(use_logger):
         mqtt_prime = MessageBroker(use_logger)
 
 
-# Return properly formatted topic
-def get_formatted_topic(feed_name):
-    return mqtt_data["username"] + "/feeds/" + feed_name + "/json"
-
-
 # All the data we need to set up mqtt_client
 try:
     from mqtt_data import mqtt_data
@@ -36,6 +31,14 @@ except ImportError:
     log_message = "MQTT data stored in mqtt_data.py, please create file"
     print(log_message)
     raise
+
+
+# Return properly formatted topic
+def get_formatted_topic(feed_name):
+    if mqtt_data["is_adafruit_io"] is True:
+        return mqtt_data["username"] + "/feeds/" + feed_name + "/json"
+    else:
+        return feed_name
 
 
 # The class where the mqtt_client is initialized
@@ -49,12 +52,15 @@ class MessageBroker:
             port=mqtt_data["port"],
             username=mqtt_data["username"],
             password=mqtt_data["key"],
-            is_ssl=True,
+            is_ssl=mqtt_data["use_ssl"],
             ssl_context=ssl.create_default_context(),
         )
         self.io = None
         self.gen_feed = mqtt_data["primary_feed"]
-        self.gen_topic = mqtt_data["username"] + "/feeds/" + self.gen_feed + "/json"
+        if mqtt_data["is_adafruit_io"] is True:
+            self.gen_topic = mqtt_data["username"] + "/feeds/" + self.gen_feed + "/json"
+        else:
+            self.gen_topic = self.gen_feed
         self.use_logger = use_logger
         if self.use_logger is True:
             self.my_log = logger.getLocalLogger()
@@ -84,7 +90,7 @@ class MessageBroker:
     # Subscribe to MQTT topics
     def subscribe(self, topics):
         for t in range(len(topics)):
-            topic = mqtt_data["username"] + "/feeds/" + topics[t]
+            topic = get_formatted_topic(topics[t])
             self.mqtt_client.subscribe(topic)
 
     # Publish to MQTT
