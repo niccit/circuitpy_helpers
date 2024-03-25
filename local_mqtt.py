@@ -1,7 +1,4 @@
 # SPDX-License-Identifier: MIT
-
-
-import ssl
 import adafruit_minimqtt.adafruit_minimqtt as my_mqtt
 from adafruit_io.adafruit_io import IO_MQTT
 import local_logger as logger
@@ -11,17 +8,17 @@ mqtt_prime = None  # The only MQTT client, we don't need multiple
 
 # Create or retrieve a MQTT object by name; only retrieves MQTT objects created using this function.
 # There can only be one MQTT object; if one already exists it will be returned
-# Requires the socketpool name in order to fullyl set up the MQTT client
-def getMqtt(use_logger: bool = False):
-    _addMqtt(use_logger)
+# Requires the socketpool name in order to fully set up the MQTT client
+def getMqtt(socket_pool, ssl_context, use_logger: bool = False):
+    _addMqtt(use_logger, socket_pool, ssl_context)
     return mqtt_prime
 
 
-def _addMqtt(use_logger):
+def _addMqtt(use_logger, socket_pool, ssl_context):
     global mqtt_prime
 
     if mqtt_prime is None:
-        mqtt_prime = MessageBroker(use_logger)
+        mqtt_prime = MessageBroker(use_logger, socket_pool, ssl_context)
 
 
 # All the data we need to set up mqtt_client
@@ -46,14 +43,15 @@ class MessageBroker:
 
     # Initialize the mqtt_client
     # This method should never be called directly, use getMqtt() instead
-    def __init__(self, use_logger):
+    def __init__(self, use_logger, pool, ssl_context):
         self.mqtt_client = my_mqtt.MQTT(
             broker=mqtt_data["server"],
             port=mqtt_data["port"],
             username=mqtt_data["username"],
             password=mqtt_data["key"],
+            socket_pool=pool,
+            ssl_context=ssl_context,
             is_ssl=mqtt_data["use_ssl"],
-            ssl_context=ssl.create_default_context(),
         )
         self.io = None
         self.gen_feed = mqtt_data["primary_feed"]
@@ -73,14 +71,6 @@ class MessageBroker:
         return self.io
 
     # --- Methods --- #
-
-    # Configure MQTT to use socketpool
-    def configure_publish(self, pool_name, iface=None):
-        if iface is not None:
-            my_mqtt.set_socket(pool_name, iface)
-        else:
-            my_mqtt.set_socket(pool_name)
-        self.io = IO_MQTT(self.mqtt_client)
 
     # Connect to the MQTT broker
     def connect(self):
