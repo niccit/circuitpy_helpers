@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: MIT
+import adafruit_connection_manager
 import adafruit_minimqtt.adafruit_minimqtt as my_mqtt
 from adafruit_io.adafruit_io import IO_MQTT
 import local_logger as logger
@@ -9,7 +10,8 @@ mqtt_prime = None  # The only MQTT client, we don't need multiple
 # Create or retrieve a MQTT object by name; only retrieves MQTT objects created using this function.
 # There can only be one MQTT object; if one already exists it will be returned
 # Requires the socketpool name in order to fully set up the MQTT client
-def getMqtt(socket_pool, ssl_context, use_logger: bool = False):
+def getMqtt(socket_pool: adafruit_connection_manager.SocketType = None,
+            ssl_context: adafruit_connection_manager.SSLContextType = None, use_logger: bool = False):
     _addMqtt(use_logger, socket_pool, ssl_context)
     return mqtt_prime
 
