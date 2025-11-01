@@ -1,0 +1,25 @@
+{"animations":
+  [
+    {"name": "rainbow_sparkle", "speed": 0.1, "sparkles": 30},
+    ,{"name": "custom_sparkle", "speed": 0.1, "color": "data","sparkles": 30}
+    ,{"name": "random_sparkle", "speed": 0.1, "color": "random","sparkles": 30}
+    ,{"name": "rainbow_breathe", "speed": 1, "color": "all", "rate": 0.08, "step" : 0.04, "count": 1}
+    ,{"name": "custom_breathe", "speed": 1, "color": "data", "rate":  0.08, "step": 0.04, "count": 2}
+    ,{"name": "random_breathe", "speed": 1, "color": "random", "rate": 0.08, "step": 0.04, "count": 5}
+    ,{"name": "multi_breathe", "speed": 1, "color": "data", "rate": 0.08, "step": 0.04, "count": 5}
+    ,{"name": "rainbow_chase", "speed": 0.01, "size":  20, "spacing":  21, "reverse": "False"}
+    ,{"name": "custom_chase", "speed": 0.01, "color": "data", "size": 20, "spacing": 21, "reverse": "False"}
+    ,{"name": "random_chase", "speed": 0.01, "color": "random", "size": 20, "spacing": 21, "reverse": "False"}
+    ,{"name": "multi_chase", "speed": 0.01, "color": "data", "size":  20, "spacing":  21, "reverse": "False"}
+    ,{"name": "blink", "speed":  1, "color": "data"}
+    ,{"name": "cycle", "speed":  1, "color":  "data"}
+    ,{"name": "rainbow_comet", "speed":  0.001, "tail_length": 240, "reverse": "True", "bounce": "False"}
+    ,{"name": "custom_comet", "speed":  0.001, "color": "data", "tail_length": 240, "reverse": "True", "bounce": "False"}
+    ,{"name": "random_comet", "speed":  0.001, "color": "random", "tail_length": 240, "reverse": "True", "bounce": "False"}
+    ,{"name": "multi_comet", "speed":  0.001, "color": "data", "tail_length": 240, "reverse": "True", "bounce": "False"}
+    ,{"name": "pacman", "speed": 0.1, "color": "random"}
+    ,{"name": "rainbow", "speed": 0.1, "period": 2}
+    ,{"name": "custom_solid", "color": "data"}
+    ,{"name": "random_solid", "color": "random"}
+  ]
+}
