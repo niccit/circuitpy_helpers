@@ -56,15 +56,12 @@ def update_data_file(message, search_name, count=1):
     updated_value = in_data["new_value"]
     try:
         if float(in_data["search_string"]):
-            print(f"I got a number {in_data['search_string']}")
             search_string = "'" + search_name + "'" + ": " + str(in_data["search_string"])
             updated_value = "'" + search_name + "'" + ": " + str(in_data["new_value"])
     except ValueError:
         if "[" in in_data["search_string"]:
-            print("we have a list")
             search_string = "'" + search_name + "'" + ": " + str(in_data["search_string"])
             updated_value = "'" + search_name + "'" + ": " + "[" + str(in_data["new_value"]) + "]"
-            print(f"search string {search_string}, new value {updated_value}")
         else:
             search_string = "'" + search_name + "'" + ": " + "'" + str(in_data["search_string"]) + "'"
             updated_value = "'" + search_name + "'" + ": " + str(in_data["new_value"])
@@ -75,7 +72,6 @@ def update_data_file(message, search_name, count=1):
             file_data = file.read()
             if search_name in file_data:
                 updated_content = file_data.replace(search_string, updated_value, count)
-                print(f"updated content: {updated_content}")
         file.close()
     except FileNotFoundError:
         print(f"Could read from {filename}, does not exist")
