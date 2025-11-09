@@ -14,13 +14,15 @@ class BreatheAnimation(Animation):
         ,rate=0.1
         ,step=0.04
         ,count=1
+        ,high_limit = 0.5
+        ,low_limit = 0.025
         ):
 
         super().__init__(pixel_object, speed, (0, 0, 0))
 
         self.direction = "forward"
-        self.high_limit = 0.5
-        self.low_limit = 0.025
+        self.high_limit = high_limit
+        self.low_limit = low_limit
         self.brightness = self.high_limit
         self.colors = colors
         self.rate = rate
