@@ -3,7 +3,6 @@ import random
 
 import adafruit_led_animation.color
 
-
 # Given a color name, return the tuple
 # Uses for this include updating LED light configurations via MQTT
 # Lazy way to not have to continually look up RGB codes
@@ -59,7 +58,6 @@ def get_random_color():
     blue = random.randrange(100, 200)
     random_color = (red, green, blue)
     return random_color
-
 
 # Pre-defined color palettes to use across applications
 # Returns a list of tuples
