@@ -13,10 +13,10 @@
     ,{"name": "random_blink", "speed":  1, "colors": "random"}
     ,{"name": "cycle", "speed":  1, "colors":  "data"}
     ,{"name": "rainbow_cycle", "speed": 1}
-    ,{"name": "rainbow_comet", "speed":  0.001, "tail_length": 240, "reverse": "True", "bounce": "False"}
-    ,{"name": "multi_comet", "speed":  0.001, "colors": "data", "tail_length": 240, "reverse": "True", "bounce": "False"}
-    ,{"name": "custom_comet", "speed":  0.001, "colors": "data", "tail_length": 240, "reverse": "True", "bounce": "False"}
-    ,{"name": "random_comet", "speed":  0.001, "colors": "random", "tail_length": 240, "reverse": "True", "bounce": "False"}
+    ,{"name": "rainbow_comet", "speed":  0.001, "tail_length": 30, "reverse": "True", "bounce": "False"}
+    ,{"name": "multi_comet", "speed":  0.001, "colors": "data", "tail_length": 30, "reverse": "True", "bounce": "False"}
+    ,{"name": "custom_comet", "speed":  0.001, "colors": "data", "tail_length": 30, "reverse": "True", "bounce": "False"}
+    ,{"name": "random_comet", "speed":  0.001, "colors": "random", "tail_length": 30, "reverse": "True", "bounce": "False"}
     ,{"name": "random_pacman", "speed": 0.1, "colors": "random"}
     ,{"name": "custom_pacman", "speed": 0.1, "colors": "data"}
     ,{"name": "rainbow", "speed": 0.1, "period": 2}
