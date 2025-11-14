@@ -3,12 +3,12 @@
     {"name": "rainbow_sparkle", "speed": 0.1, "sparkles": 30},
     ,{"name": "custom_sparkle", "speed": 0.1, "colors": "data","sparkles": 30}
     ,{"name": "random_sparkle", "speed": 0.1, "colors": "random","sparkles": 30}
-    ,{"name": "custom_breathe", "speed": 1, "colors": "data", "rate":  0.08, "step": 0.04, "count": 2}
-    ,{"name": "random_breathe", "speed": 1, "colors": "random", "rate": 0.08, "step": 0.04, "count": 5, "max_bright": 0.5, "min_bright": 0.025}
-    ,{"name": "rainbow_chase", "speed": 0.01, "size":  20, "spacing":  21, "reverse": "False"}
-    ,{"name": "multi_chase", "speed": 0.01, "colors": "data", "size": 20, "spacing": 21, "reverse": "False"}
-    ,{"name": "random_chase", "speed": 0.01, "colors": "random", "size": 20, "spacing": 21, "reverse": "False"}
-    ,{"name": "custom_chase", "speed": 0.01, "colors": "data", "size": 20, "spacing": 21, "reverse": "False"}
+    ,{"name": "custom_breathe", "speed": 1, "colors": "data", "rate":  0.08, "step": 0.04, "count": 5}
+    ,{"name": "random_breathe", "speed": 1, "colors": "random", "rate": 0.08, "step": 0.04, "count": 5}
+    ,{"name": "rainbow_chase", "speed": 0.01, "size":  5, "spacing":  6, "reverse": "False"}
+    ,{"name": "multi_chase", "speed": 0.01, "colors": "data", "size": 5, "spacing": 6, "reverse": "False"}
+    ,{"name": "random_chase", "speed": 0.01, "colors": "random", "size": 5, "spacing": 6, "reverse": "False"}
+    ,{"name": "custom_chase", "speed": 0.01, "colors": "data", "size": 5, "spacing": 6, "reverse": "False"}
     ,{"name": "custom_blink", "speed":  1, "colors": "data"}
     ,{"name": "random_blink", "speed":  1, "colors": "random"}
     ,{"name": "cycle", "speed":  1, "colors":  "data"}
