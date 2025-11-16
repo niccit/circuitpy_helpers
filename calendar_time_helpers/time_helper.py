@@ -23,6 +23,7 @@ def format_time(timestamp):
 def get_unix_time():
     return datetime.now(tz=timezone.utc).isoformat()
 
+# Given a timestamp, will take the hour and minute and convert it to seconds
 def get_time_in_seconds(timestamp):
     hour, minute = timestamp.split(':')
     hour_in_seconds = int(hour)* 3600
