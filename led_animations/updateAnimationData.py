@@ -5,7 +5,6 @@ from circuitpy_helpers.color_helpers import getColors
 # This file will assist with common replacements specific to LED lighting
 # It can handle overriding pre-set values for animations
 # As well as changing colors and the active animation
-# tmp update
 
 # Use this to override default settings for animations, in animations.json
 def override_default_settings(data_file, possible_overrides, item):
