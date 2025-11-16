@@ -48,16 +48,3 @@ def set_color(data_file, item):
 
     return item
 
-
-def override_default_settings(filename, possible_overrides, item):
-    data = str(filename)
-    print(f"data is {data}")
-
-#     try:
-#         override_array = possible_overrides
-#         for o in override_array:
-#             name = item['name'] + "_" + o + "_override"
-#             if name in data:
-#                 item[o] = data[name]
-#     except KeyError as e:
-#         pass
