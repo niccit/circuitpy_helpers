@@ -17,8 +17,10 @@ data = {
     ,'motion_solid_color': None
     ,'custom_sparkle_sparkles_override': None
     ,'rainbow_sparkle_sparkles_override': None
+    ,'random_sparkle_sparkles_override': None
     ,'custom_sparkle_speed_override': None
     ,'rainbow_sparkle_speed_override': None
+    ,'random_sparkle_speed_override': None
     ,'custom_breathe_speed_override': None
     ,'random_breathe_speed_override': None
     ,'random_chase_speed_override': None
