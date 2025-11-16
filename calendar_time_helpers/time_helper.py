@@ -22,3 +22,11 @@ def format_time(timestamp):
 # Will return the UNIX time
 def get_unix_time():
     return datetime.now(tz=timezone.utc).isoformat()
+
+def get_time_in_seconds(timestamp):
+    hour, minute = timestamp.split(':')
+    hour_in_seconds = int(hour)* 3600
+    minute_in_seconds = int(minute)* 60
+    time_in_seconds = hour_in_seconds + minute_in_seconds
+
+    return time_in_seconds
