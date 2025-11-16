@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 from adafruit_led_animation.animation.blink import Blink
 from adafruit_led_animation.animation.chase import Chase
 from adafruit_led_animation.animation.colorcycle import ColorCycle
@@ -11,7 +12,7 @@ from adafruit_led_animation.animation.sparkle import Sparkle
 from adafruit_led_animation.animation.rainbowsparkle import RainbowSparkle
 from adafruit_led_animation.animation.rainbowchase import RainbowChase
 from adafruit_led_animation.animation.rainbowcomet import RainbowComet
-import circuitpy_helpers.led_animations.custom_animations.BreatheAnimation as BreatheAnimation
+from circuitpy_helpers.led_animations.custom_animations import BreatheAnimation
 
 
 # Single class containing a subset of the available LED animations from the CircuitPython LED Animation library
