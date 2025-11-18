@@ -36,4 +36,4 @@ def get_time_in_seconds(timestamp):
 def convert_stringtime_to_time(timestamp):
     hour, minute = timestamp.split(':')
     new_time = time.struct_time((1970, 1, 1, int(hour), int(minute), 00, 0000, 0000, 0000))
-    return "{:02d}:{:02d}".format(new_time.tm_hour, new_time.tm_min)
+    return new_time
