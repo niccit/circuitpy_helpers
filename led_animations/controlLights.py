@@ -2,6 +2,8 @@
 import alarm
 import time
 
+# Common methods that may be used across projects
+
 # If start up time is before sunset, sleep until set_time
 def sleep_before_set_time(now_time, set_time, before_set_time, pixels):
     if now_time < set_time:

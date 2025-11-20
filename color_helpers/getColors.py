@@ -3,6 +3,8 @@ import random
 
 import adafruit_led_animation.color
 
+# Common methods that may be used across LED light projects
+
 # Given a color name, return the tuple
 # Uses for this include updating LED light configurations via MQTT
 # Lazy way to not have to continually look up RGB codes
