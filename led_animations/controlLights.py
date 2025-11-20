@@ -12,10 +12,10 @@ def sleep_before_set_time(now_time, set_time, before_set_time, pixels):
             alarm.light_sleep_until_alarms(wake_alarm)
 
 # If up and running, and it's shut off time, sleep until next day around set_time
-def shutdown(now_time, set_time, sleep_time, before_set_time, pixels):
-    running_time = (now_time - set_time)
-    time_diff = (sleep_time - running_time) - before_set_time
-    if time_diff > 0:
+def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pixels):
+    running_time = (now_time - start_time)
+    time_diff = (sleep_time - running_time) - before_start_time
+    if now_time >= stop_time and time_diff > 0:
         wake_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + time_diff)
         _blank_all(pixels)
         alarm.light_sleep_until_alarms(wake_alarm)
