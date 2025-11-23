@@ -28,9 +28,9 @@ def cpy_wan_active():
 # Return True or False
 # For Python
 def py_wan_active():
-    from scapy.sendrecv import sr1
-    from scapy.layers.inet import IP, ICMP
-    ping =  IP(dst='8.8.8.8')/ICMP()
-    response = sr1(ping)
+    from scapy.sendrecv import sr
+    from scapy.layers.inet import IP
+    ping =  IP(dst='8.8.8.8')
+    response = sr(ping)
     return response
 
