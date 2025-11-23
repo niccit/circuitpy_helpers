@@ -28,9 +28,17 @@ def cpy_wan_active():
 # Return True or False
 # For Python
 def py_wan_active():
-    from scapy.sendrecv import sr
-    from scapy.layers.inet import IP
-    ping =  IP(dst='8.8.8.8')
-    response = sr(ping)
-    return response
+    import subprocess
+    import platform
+    hostname = "google.com"
+    parameter = '-n' if platform.system() == 'Windows' else '-c'
+    try:
+        subprocess.check_output(["ping", parameter, "1", hostname],
+                                stderr=subprocess.STDOUT,
+                                timeout=2)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+    except subprocess.TimeoutExpired:
+        return False
 
