@@ -1,6 +1,4 @@
 # SPDX-License-Identifier: MIT
-import ipaddress
-import wifi
 import time
 
 #
@@ -10,7 +8,10 @@ import time
 
 # Attempt a ping to see if the LAN is connected to the WAN
 # Return True or False
-def wan_active(radio):
+# For CircuitPython
+def cpy_wan_active():
+    import ipaddress
+    import wifi
     ping_ip = ipaddress.IPv4Address("8.8.8.8")
     ping_response = wifi.radio.ping(ping_ip)
     if ping_response is None:
@@ -22,3 +23,14 @@ def wan_active(radio):
         return False
     else:
         return True
+
+# Attempt a ping to see if the LAN is connected to the WAN
+# Return True or False
+# For Python
+def py_wan_active():
+    from scapy.sendrecv import sr1
+    from scapy.layers.inet import IP, ICMP
+    ping =  IP(dst='8.8.8.8')/ICMP()
+    response = sr1(ping)
+    return response
+
