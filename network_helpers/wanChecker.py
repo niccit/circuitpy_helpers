@@ -15,7 +15,7 @@ def wan_active(radio):
     ping_response = wifi.radio.ping(ping_ip)
     if ping_response is None:
         # Sleep for 5 seconds and try again
-        time.sleep(5)
+        time.sleep(1)
         ping_response = wifi.radio.ping(ping_ip)
 
     if ping_response is None:
