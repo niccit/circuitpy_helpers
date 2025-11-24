@@ -9,7 +9,7 @@ import supervisor
 def sleep_before_set_time(now_time, set_time, before_set_time, ignore_sunset, pixels):
     if now_time < set_time:
         time_diff = (set_time - now_time) - before_set_time
-        if 0 < time_diff <= before_set_time and not ignore_sunset:
+        if 0 < time_diff <= set_time and not ignore_sunset:
             wake_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + time_diff)
             _blank_all(pixels)
             alarm.light_sleep_until_alarms(wake_alarm)
