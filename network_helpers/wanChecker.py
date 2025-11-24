@@ -15,8 +15,8 @@ def cpy_wan_active():
     ping_ip = ipaddress.IPv4Address("8.8.8.8")
     ping_response = wifi.radio.ping(ping_ip)
     if ping_response is None:
-        # Sleep for 5 seconds and try again
-        time.sleep(1)
+        # Sleep for .25 seconds and try again
+        time.sleep(0.25)
         ping_response = wifi.radio.ping(ping_ip)
 
     if ping_response is None:
