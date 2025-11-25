@@ -10,7 +10,7 @@ import adafruit_led_animation.color
 # Lazy way to not have to continually look up RGB codes
 # While most of these return what's in the LED animation color library you can easily add more
 def get_color_tuple(name):
-    color = adafruit_led_animation.color.WHITE
+    color = adafruit_led_animation.color.PINK
     if name == "red":
         color = adafruit_led_animation.color.RED
     elif name == "yellow":
@@ -64,7 +64,7 @@ def get_random_color():
 # Pre-defined color palettes to use across applications
 # Returns a list of tuples
 def get_color_palette(name):
-    palette = []
+    palette = adafruit_led_animation.color.RAINBOW
     if name == "rainbow":
         palette = adafruit_led_animation.color.RAINBOW
     elif name == "christmas":

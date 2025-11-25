@@ -41,7 +41,10 @@ def set_color(data_file, item):
                 color_list = getColors.get_color_palette(palette)
                 item['colors'] = color_list
             elif "None" in colors:
-                item['colors'] = getColors.get_color_tuple('indigo')
+                if "multi" in item["name"]:
+                    item['colors'] = getColors.get_color_palette("rainbow")
+                elif "custom" in item["name"]:
+                    item['colors'] = getColors.get_color_tuple('indigo')
             else:
                 choice = getColors.get_color_tuple(colors)
                 item['colors'] = choice
