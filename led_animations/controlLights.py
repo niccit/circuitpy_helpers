@@ -26,5 +26,7 @@ def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pix
         supervisor.reload()
 
 def _blank_all(pixels):
-   pixels.fill((0, 0, 0))
-   pixels.show()
+    pixel_array = pixels
+    for leds in pixel_array:
+       leds.fill((0, 0, 0))
+       leds.show()
