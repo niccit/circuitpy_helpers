@@ -25,6 +25,7 @@ def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pix
         alarm.light_sleep_until_alarms(wake_alarm)
         supervisor.reload()
 
+# If managing multiple strings, strands can be blanked out before calling sleep and shutdown routines
 def blank_all(pixels):
     pixels.fill((0, 0, 0))
     pixels.show()
