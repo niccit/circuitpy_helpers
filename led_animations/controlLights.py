@@ -11,7 +11,7 @@ def sleep_before_set_time(now_time, set_time, before_set_time, ignore_sunset, pi
         time_diff = (set_time - now_time) - before_set_time
         if 0 < time_diff <= set_time and not ignore_sunset:
             wake_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + time_diff)
-            _blank_all(pixels)
+            blank_all(pixels)
             alarm.light_sleep_until_alarms(wake_alarm)
             supervisor.reload()
 
@@ -21,10 +21,10 @@ def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pix
     time_diff = (sleep_time - running_time) - before_start_time
     if now_time >= stop_time and time_diff > 0:
         wake_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + time_diff)
-        _blank_all(pixels)
+        blank_all(pixels)
         alarm.light_sleep_until_alarms(wake_alarm)
         supervisor.reload()
 
-def _blank_all(pixels):
+def blank_all(pixels):
     pixels.fill((0, 0, 0))
     pixels.show()
