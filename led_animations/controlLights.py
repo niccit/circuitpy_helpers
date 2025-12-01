@@ -27,6 +27,7 @@ def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pix
 
 def _blank_all(pixels):
     pixel_array = pixels
+    print(f"controlLights: pixel array is {pixel_array} and is {len(pixel_array)}")
     if len(pixel_array) == 1:
         pixels.fill((0, 0, 0))
         pixels.show()
