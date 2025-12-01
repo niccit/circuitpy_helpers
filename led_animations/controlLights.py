@@ -26,12 +26,5 @@ def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pix
         supervisor.reload()
 
 def _blank_all(pixels):
-    pixel_array = pixels
-    print(f"controlLights: pixel array is {len(pixel_array)} big")
-    if len(pixel_array) == 1:
-        pixels.fill((0, 0, 0))
-        pixels.show()
-    else:
-        for leds in pixel_array:
-           leds.fill((0, 0, 0))
-           leds.show()
+    pixels.fill((0, 0, 0))
+    pixels.show()
