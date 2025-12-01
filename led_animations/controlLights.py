@@ -43,7 +43,7 @@ def sleep_before_set_time(now_time, set_time, before_set_time):
 
 # Put lights to sleep for specified amount of time - sleep_time
 # supervisor.reload() is there because lights freeze when coming out of sleep without it
-def shutdown(now_time, stop_time, start_time, sleep_time, before_start_time, pixels):
+def shutdown(now_time, start_time, sleep_time, before_start_time):
     running_time = (now_time - start_time)
     time_diff = (sleep_time - running_time) - before_start_time
     wake_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + time_diff)
