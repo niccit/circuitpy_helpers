@@ -8,10 +8,10 @@ import supervisor
 
 # Check if lights should be put to sleep until scheduled time
 # Returns True or False
-def check_need_sleep(now_time, set_time, before_set_time, ignore_sunset):
+def check_need_sleep(now_time, set_time, before_set_time, ignore_sleep_time):
     if now_time < set_time:
         time_diff = (set_time - now_time) - before_set_time
-        if 0 < time_diff <= set_time and not ignore_sunset:
+        if 0 < time_diff <= set_time and not ignore_sleep_time:
             check = True
         else:
             check = False
