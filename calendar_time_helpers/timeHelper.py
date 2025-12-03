@@ -8,10 +8,9 @@ import time
 def get_current_time():
     from datetime import datetime
     now = datetime.now()
-    current_hour = now.hour
     current_min = now.minute
     current_time = now.strftime("%H:%M")
-    return current_hour, current_min, current_time
+    return current_min, current_time
 
 
 # Will properly format a UNIX timestamp into a readable value
