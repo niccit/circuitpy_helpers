@@ -12,7 +12,6 @@ def override_default_settings(data_file, possible_overrides, item):
     for o in override_array:
         name = item['name'] + "_" + o + "_override"
         try:
-            print(f"Overriding {name}, with {data_file[name]}")
             if data_file[name] is not "None":
                 item[o] = data_file[name]
         except KeyError:
