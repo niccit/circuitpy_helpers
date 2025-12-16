@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 import supervisor
 import os
+import time
 
 # common methods that may be used across different projects
 
@@ -9,10 +10,11 @@ import os
 # Provides for on the fly backup and restoration of a given file
 # Use explicit path to file when calling method
 # Example use: temporarily updating configurations using MQTT
-def backup_and_restore(filename="data.py", backup=False, restore=False):
+def backup_and_restore(filename="data.py", backup=False, restore=False, sleep_time=0):
     backup_filename = filename + "_bu"
     if restore:
         try:
+            time.sleep(sleep_time)
             os.rename(backup_filename, filename)
             supervisor.reload()
         except OSError as e:
@@ -27,7 +29,6 @@ def backup_and_restore(filename="data.py", backup=False, restore=False):
             file = open(backup_filename, "w")
             file.write(contents)
             file.close()
-            dir_list = os.listdir("/")
         except OSError as e:
             print(f"Could not backup configuration file {filename}, does not exist")
             pass
