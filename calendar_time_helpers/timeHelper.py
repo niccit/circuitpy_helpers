@@ -5,7 +5,7 @@ import time
 # Return the current minute and the current_time
 # Example use for current_min - know when to update a time display
 # This is for a board that has a system clock, i.e., Raspberrypi
-# If needed can return the the current hour in addition to the current minute
+# If needed can return the current hour in addition to the current minute
 def get_current_time(get_hour=False):
     from datetime import datetime
     now = datetime.now()
