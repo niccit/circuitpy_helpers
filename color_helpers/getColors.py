@@ -55,10 +55,7 @@ def get_color_tuple(name):
 # Excludes black and white
 # Returns a tuple
 def get_random_color():
-    red = random.randrange(200, 255)
-    green = random.randrange(200, 255)
-    blue = random.randrange(200, 255)
-    random_color = (red, green, blue)
+    random_color = tuple(random.choices(range(256), k=3))
     return random_color
 
 # Pre-defined color palettes to use across applications
