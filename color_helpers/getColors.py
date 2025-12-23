@@ -55,9 +55,9 @@ def get_color_tuple(name):
 # Excludes black and white
 # Returns a tuple
 def get_random_color():
-    red = random.randrange(190, 200)
-    green = random.randrange(190, 200)
-    blue = random.randrange(190, 200)
+    red = random.randrange(200, 255)
+    green = random.randrange(200, 255)
+    blue = random.randrange(200, 255)
     random_color = (red, green, blue)
     return random_color
 
