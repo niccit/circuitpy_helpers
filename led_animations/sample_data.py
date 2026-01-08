@@ -1,10 +1,9 @@
 data = {
-    'animations': ['custom_breathe']
+    'animations': ['cycle']
     ,'num_pixels' : 300
     ,'brightness_high' : 0.5
     ,'brightness_low' : 0.025
     ,'animation_wait' : 30
-    ,'custom_breathe_color': None
     ,'custom_sparkle_color': None
     ,'custom_blink_color': None
     ,'multi_comet_color': None
@@ -21,8 +20,6 @@ data = {
     ,'custom_sparkle_speed_override': None
     ,'rainbow_sparkle_speed_override': None
     ,'random_sparkle_speed_override': None
-    ,'custom_breathe_speed_override': None
-    ,'random_breathe_speed_override': None
     ,'random_chase_speed_override': None
     ,'multi_chase_speed_override': None
     ,'custom_chase_speed_override': None
@@ -62,8 +59,4 @@ data = {
     ,'custom_chase_rate_override': None
     ,'multi_chase_rate_override': None
     ,'random_chase_rate_override': None
-    ,'random_breathe_step_override': None
-    ,'custom_breathe_step_override': None
-    ,'random_breathe_count_override': None
-    ,'custom_breathe_count_override': None
 }
