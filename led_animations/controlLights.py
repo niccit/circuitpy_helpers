@@ -38,7 +38,8 @@ def check_need_shutdown(now_time, stop_time, start_time, sleep_time, before_star
 def sleep_before_set_time(now_time, set_time, before_set_time):
     time_diff = (set_time - now_time) - before_set_time
     wake_alarm = alarm.time.TimeAlarm(monotonic_time=time.monotonic() + time_diff)
-    alarm.light_sleep_until_alarms(wake_alarm)
+    # alarm.light_sleep_until_alarms(wake_alarm)
+    alarm.exit_and_deep_sleep_until_alarms(wake_alarm)
     supervisor.reload()
 
 # Put lights to sleep for specified amount of time - sleep_time
