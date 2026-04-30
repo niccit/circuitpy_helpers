@@ -45,7 +45,7 @@ def sleep_before_set_time(now_time, set_time, before_set_time, sleep_type=0):
         alarm.exit_and_deep_sleep_until_alarms(wake_alarm)
     else:
         alarm.light_sleep_until_alarms(wake_alarm)
-        supervisor.reload()
+    supervisor.reload()
 
 # Put lights to sleep until specified wake time i.e., sunrise
 # supervisor.reload() is there because lights freeze when coming out of light sleep without it
@@ -57,4 +57,4 @@ def shutdown(now_time, start_time, before_start_time, sleep_type=0 ):
         alarm.exit_and_deep_sleep_until_alarms(wake_alarm)
     else:
         alarm.light_sleep_until_alarms(wake_alarm)
-        supervisor.reload()
+    supervisor.reload()
