@@ -88,7 +88,7 @@ def get_color_palette(name):
     elif name == "purples":
         palette = (adafruit_led_animation.color.PURPLE, adafruit_led_animation.color.MAGENTA, (218,112,214), (153,50,204))
     elif name == "sea":
-        palette = (adafruit_led_animation.color.AQUA, adafruit_led_animation.color.TEAL, (127,255,212), (32,178,170), (60, 179.113))
+        palette = (adafruit_led_animation.color.AQUA, adafruit_led_animation.color.TEAL, (127,255,212), (32,178,170), (60,179,113))
     return palette
 
 
