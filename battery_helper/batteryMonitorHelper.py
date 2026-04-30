@@ -24,7 +24,6 @@ def monitor_battery(battery, battery_type: str):
     if battery_type is "v1":
         voltage = battery.value
         voltage = voltage * 2
-        voltage = voltage / 1000
     elif battery_type is "v2":
         voltage = round(battery.cell_voltage, 1)
         percentage = round(battery.cell_percent, 2)
