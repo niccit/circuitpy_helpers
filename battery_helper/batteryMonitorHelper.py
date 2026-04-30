@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: MIT
 
+import board
+from adafruit_blinka.microcontroller.generic_agnostic_board.pin import Pin
+
 
 # If the battery is equal to or higher than 4.0 it's fully charged
 def get_full_level():
@@ -18,21 +21,21 @@ def get_warning_level():
 # Return the raw output from the battery
 # For battery monitor on boards like the Feather ESP32v2 Huzzah type -> v1
 # For MAX17048 Battery Monitor OR LC709203F Battery Monitor type -> v2
-def monitor_battery(battery, battery_type):
+def monitor_battery(pin, battery_type: str):
     voltage = None
     percentage = None
     if battery_type is "v1":
-        voltage = round(battery.value, 1)
+        voltage = round(pin.value, 1)
         percentage = voltage * 2
         percentage = round(percentage / 1000, 2)
     elif battery_type is "v2":
-        voltage = round(battery.cell_voltage, 1)
-        percentage = round(battery.cell_percent, 2)
+        voltage = round(pin.cell_voltage, 1)
+        percentage = round(pin.cell_percent, 2)
 
     return voltage, percentage
 
 # Return a pretty print version of voltage for logging/publishing
-def format_battery_voltage(voltage, battery):
+def format_battery_voltage(voltage):
     pretty_voltage = f"{voltage:0.2f}V"
     return pretty_voltage
 
