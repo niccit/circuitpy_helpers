@@ -22,9 +22,9 @@ def monitor_battery(battery, battery_type: str):
     voltage = None
     percentage = None
     if battery_type is "v1":
-        voltage = battery.value
+        voltage = battery.value     # 1/2 of the actual voltage see https://learn.adafruit.com/adafruit-esp32-feather-v2/pinouts
         voltage = voltage * 2
-        voltage = (voltage * 3.3) / 65536
+        voltage = (voltage * 3.3) / 65536       # Need to scale the raw reading based on the ADC reference voltage see https://learn.adafruit.com/circuitpython-essentials/circuitpython-analog-in
     elif battery_type is "v2":
         voltage = round(battery.cell_voltage, 1)
         percentage = round(battery.cell_percent, 2)
