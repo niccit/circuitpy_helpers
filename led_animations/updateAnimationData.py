@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-import getColors
+from circuitpy_libs import getColors
 
 # This file will assist with common replacements specific to LED lighting
 # It can handle overriding pre-set values for animations
