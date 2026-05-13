@@ -49,6 +49,20 @@ def get_color_tuple(name):
         color = (75,0,130)
     elif name == "dark turquoise":
         color = (0,206,209)
+    elif name == "light yellow":
+        color = (255,255,224)
+    elif name == "mint cream":
+        color = (245,255,250)
+    elif name == "lavender":
+        color = (230,230,250)
+    elif name == "ghost white":
+        color = (248,248,255)
+    elif name == "light sky blue":
+        color = (135,206,250)
+    elif name == "papaya whip":
+        color = (255,239,213)
+    elif name == "snow":
+        color = (255,250,250)
     return color
 
 # Generate a random coloGr
@@ -89,6 +103,10 @@ def get_color_palette(name):
         palette = (adafruit_led_animation.color.PURPLE, adafruit_led_animation.color.MAGENTA, (218,112,214), (153,50,204))
     elif name == "sea":
         palette = (adafruit_led_animation.color.AQUA, adafruit_led_animation.color.TEAL, (127,255,212), (32,178,170), (60,179,113))
+    elif name == "pale light":
+        palette = (get_color_tuple("light yellow"), get_color_tuple("light sky blue"), get_color_tuple("papaya whip"), get_color_tuple("lavender"),  get_color_tuple("mint cream"))
+    elif name == "whites":
+        palette = (get_color_tuple("old_lace"), get_color_tuple("snow"), get_color_tuple("ghost white"))
     return palette
 
 
