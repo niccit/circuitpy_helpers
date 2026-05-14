@@ -103,7 +103,7 @@ def get_color_palette(name):
         palette = (adafruit_led_animation.color.PURPLE, adafruit_led_animation.color.MAGENTA, (218,112,214), (153,50,204))
     elif name == "sea":
         palette = (adafruit_led_animation.color.AQUA, adafruit_led_animation.color.TEAL, (127,255,212), (32,178,170), (60,179,113))
-    elif name == "pale light":
+    elif name == "palelight":
         palette = (get_color_tuple("light yellow"), get_color_tuple("light sky blue"), get_color_tuple("papaya whip"), get_color_tuple("lavender"),  get_color_tuple("mint cream"))
     elif name == "whites":
         palette = (get_color_tuple("old_lace"), get_color_tuple("snow"), get_color_tuple("ghost white"))
