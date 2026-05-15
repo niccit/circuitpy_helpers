@@ -25,15 +25,20 @@ def check_need_sleep(now_time, set_time, before_set_time, ignore_sleep_time):
 # After project is up and running this would invoke periods of sleep based on schedule
 # Returns True or False
 def check_need_shutdown(now_time, start_time, before_start_time, ignore_shutdown_time):
+    time_diff = 0
+
     if now_time > start_time:
-        time_diff = (start_time - now_time) - before_start_time
-        if 0 < time_diff <= start_time and not ignore_shutdown_time:
-            check = True
-        else:
-            check = False
-        return check
+        time_diff = (now_time - start_time) - before_start_time
+    elif now_time < start_time:
+        time_diff = start_time - before_start_time
+
+    if 0 < time_diff <= start_time and not ignore_shutdown_time:
+        check = True
     else:
-        return False
+        check = False
+
+    return check
+
 
 # Put lights to sleep until scheduled start time
 # supervisor.reload() is there because lights freeze when coming out of light sleep without it
