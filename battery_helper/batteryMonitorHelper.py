@@ -13,7 +13,7 @@ def get_discharging_level():
 
 # If the battery is equal to or lower than 3.7 it is low and needs to be charged
 def get_warning_level():
-    return 3.7
+    return 3.5
 
 # Return the raw output from the battery
 # For battery monitor on boards like the Feather ESP32v2 Huzzah type -> v1
