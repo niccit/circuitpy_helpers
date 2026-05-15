@@ -13,56 +13,98 @@ def get_color_tuple(name):
     color = adafruit_led_animation.color.PINK
     if name == "red":
         color = adafruit_led_animation.color.RED
-    elif name == "yellow":
-        color = adafruit_led_animation.color.YELLOW
+    elif name == "crimson":
+        color = (220,20,60)
+    elif name == "tomato":
+        color = (255,99,71)
+    elif name == "indian red":
+        color = (205,92,92)
+    elif name == "light coral":
+        color = (240, 128, 128)
+    elif name == "salmon":
+        color = (250,128,114)
     elif name == "orange":
         color = adafruit_led_animation.color.ORANGE
+    elif name == "papaya whip":
+        color = (255, 239, 213)
+    elif name == "coral":
+        color = (255, 127, 80)
+    elif name == "gold":
+        color = adafruit_led_animation.color.GOLD
+    elif name == "goldenrod":
+        color = (218,165,32)
+    elif name == "pale goldenrod":
+        color = (238,232,170)
+    elif name == "pink":
+        color = adafruit_led_animation.color.PINK
+    elif name == "sea shell":
+        color = (255, 245, 238)
+    elif name == "light pink":
+        color = (255,182,193)
+    elif name == "magenta":
+        color = adafruit_led_animation.color.MAGENTA
+    elif name == "violet":
+        color = (238,130,238)
+    elif name == "deep pink":
+        color = (255,20,147)
+    elif name == "yellow":
+        color = adafruit_led_animation.color.YELLOW
+    elif name == "light yellow":
+        color = (255, 255, 224)
+    elif name == "amber":
+        color = adafruit_led_animation.color.AMBER
     elif name == "green":
         color = adafruit_led_animation.color.GREEN
     elif name == "teal":
         color = adafruit_led_animation.color.TEAL
-    elif name == "cyan":
-        color = adafruit_led_animation.color.CYAN
-    elif name == "blue":
-        color = adafruit_led_animation.color.BLUE
-    elif name == "purple":
-        color = adafruit_led_animation.color.PURPLE
-    elif name == "magenta":
-        color = adafruit_led_animation.color.MAGENTA
-    elif name == "white":
-        color = adafruit_led_animation.color.WHITE
-    elif name == "black":
-        color = adafruit_led_animation.color.BLACK
     elif name == "jade":
         color = adafruit_led_animation.color.JADE
-    elif name == "pink":
-        color = adafruit_led_animation.color.PINK
+    elif name == "dark turquoise":
+        color = (0, 206, 209)
+    elif name == "pale green":
+        color = (152,251,152)
+    elif name == "light green":
+        color = (144,238,144)
+    elif name == "blue":
+        color = adafruit_led_animation.color.BLUE
+    elif name == "cyan":
+        color = adafruit_led_animation.color.CYAN
     elif name == "aqua":
         color = adafruit_led_animation.color.AQUA
-    elif name == "gold":
-        color = adafruit_led_animation.color.GOLD
-    elif name == "amber":
-        color = adafruit_led_animation.color.AMBER
+    elif name == "light sky blue":
+        color = (135, 206, 250)
+    elif name == "alice blue":
+        color = (240, 248, 255)
+    elif name == "azure":
+        color = (240, 255, 255)
+    elif name == "sky blue":
+        color = (135, 206, 235)
+    elif name == "light blue":
+        color = (173, 216, 230)
+    elif name == "purple":
+        color = adafruit_led_animation.color.PURPLE
+    elif name == "indigo":
+        color = (75, 0, 130)
+    elif name == "lavender":
+        color = (230, 230, 250)
+    elif name == "blue violet":
+        color = (138,43,226)
+    elif name == "dark orchid":
+        color = (153,50,204)
+    elif name == "plum":
+        color = (221,160,221)
+    elif name == "orchid":
+        color = (218,112,214)
+    elif name == "white":
+        color = adafruit_led_animation.color.WHITE
     elif name == "old_lace":
         color = adafruit_led_animation.color.OLD_LACE
-    elif name == "indigo":
-        color = (75,0,130)
-    elif name == "dark turquoise":
-        color = (0,206,209)
-    elif name == "light yellow":
-        color = (255,255,224)
-    elif name == "mint cream":
-        color = (245,255,250)
-    elif name == "lavender":
-        color = (230,230,250)
     elif name == "ghost white":
-        color = (248,248,255)
-    elif name == "light sky blue":
-        color = (135,206,250)
-    elif name == "papaya whip":
-        color = (255,239,213)
+        color = (248, 248, 255)
     elif name == "snow":
-        color = (255,250,250)
+        color = (255, 250, 250)
+    elif name == "black":
+        color = adafruit_led_animation.color.BLACK
     return color
 
 # Generate a random coloGr
@@ -86,27 +128,27 @@ def get_color_palette(name):
     elif name == "fall":
         palette = (adafruit_led_animation.color.ORANGE, adafruit_led_animation.color.RED, adafruit_led_animation.color.GOLD, adafruit_led_animation.color.YELLOW)
     elif name == "hanukkah":
-        palette = (adafruit_led_animation.color.BLUE, (240, 240, 240))
+        palette = (adafruit_led_animation.color.BLUE, adafruit_led_animation.color.WHITE)
     elif name == "halloween":
-        palette = ((247,95,28),(255,154,0), (136,30,228), (133,226,31))
+        palette = (get_color_tuple("indigo"), adafruit_led_animation.color.ORANGE, adafruit_led_animation.color.GOLD, adafruit_led_animation.color.GREEN)
     elif name == "patrick":
-        palette = ((34,77,23), (9,148,65), (96,168,48), (159,218,64), (217,233,29))
+        palette = (adafruit_led_animation.color.GREEN, adafruit_led_animation.color.TEAL, adafruit_led_animation.color.JADE, get_color_tuple("light green"))
     elif name == "valentine":
-        palette = ((94,8,30), (181,26,58), (226,71,103), (228,131,151), (228,205,211))
+        palette = (adafruit_led_animation.color.PINK, get_color_tuple("light pink"), get_color_tuple("deep pink"), get_color_tuple("violet"))
     elif name == "easter":
-        palette = ((255,212,229), (224,205,255), (189,232,239), (183,215,132), (254,244,162))
+        palette = (get_color_tuple("light pink"), get_color_tuple("light green"), get_color_tuple("light blue"), get_color_tuple("light yellow"))
     elif name == "fourth":
-        palette = ((30,24,96), (196,31,64), (240, 240, 240))
+        palette = (adafruit_led_animation.color.RED, adafruit_led_animation.color.WHITE, adafruit_led_animation.color.BLUE)
     elif name == "blues":
-        palette = (adafruit_led_animation.color.BLUE, (24, 24, 112), (0, 0, 128), (65,105,255), (245, 24, 112))
+        palette = (adafruit_led_animation.color.BLUE, get_color_tuple("light sky blue"), get_color_tuple("alice blue"))
     elif name == "purples":
-        palette = (adafruit_led_animation.color.PURPLE, adafruit_led_animation.color.MAGENTA, (218,112,214), (153,50,204))
+        palette = (adafruit_led_animation.color.PURPLE, get_color_tuple("indigo"), get_color_tuple("dark orchid"), get_color_tuple("plum"))
     elif name == "sea":
-        palette = (adafruit_led_animation.color.AQUA, adafruit_led_animation.color.TEAL, (127,255,212), (32,178,170), (60,179,113))
+        palette = (adafruit_led_animation.color.AQUA, adafruit_led_animation.color.TEAL, get_color_tuple("azure"), get_color_tuple("dark turquoise"), adafruit_led_animation.color.JADE)
     elif name == "palelight":
         palette = (get_color_tuple("light yellow"), get_color_tuple("light sky blue"), get_color_tuple("papaya whip"), get_color_tuple("lavender"),  get_color_tuple("mint cream"))
     elif name == "whites":
-        palette = (get_color_tuple("old_lace"), get_color_tuple("snow"), get_color_tuple("ghost white"))
+        palette = (get_color_tuple("old_lace"), get_color_tuple("snow"), get_color_tuple("ghost white"), get_color_tuple("sea shell"))
     return palette
 
 
